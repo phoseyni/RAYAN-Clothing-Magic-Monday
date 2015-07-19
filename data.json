@@ -1,0 +1,53 @@
+{
+    "RCSHOP": {
+        "week": 1,
+        "date": "2015-07-13T17:30:02.869Z",
+		"Gallery": {
+            "men-cover": "http://hdwallsource.com/img/2014/7/fantastic-men-fashion-wallpaper-40447-41391-hd-wallpapers.jpg",
+            "women-cover": "http://thewowstyle.com/wp-content/uploads/2014/12/Women-Fashion-Jeans-672x372.jpg",
+            
+            "men-product-images": ["https://sites.google.com/site/rcmma2015/_/rsrc/1437291894551/home/image-e13f117d67eb679871a24715a279e70add319344b6cd658961aa8426cca0f525-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291891621/home/image-c383092de629d58de98e61337e3beb424f88933146ea7507c3b99a4cb953f9e5-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291888662/home/image-c2084ac5dadf457ca359eb7f343f1f2f57fb9637027e65d497ab867f462f9624-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291886028/home/image-a421bbac3ad17cacc9863038fab82b7174ae763d6d3038b60b6311059e8e6bde-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291894551/home/image-e13f117d67eb679871a24715a279e70add319344b6cd658961aa8426cca0f525-V.jpg"],
+            "men-product-detail": {
+              "items": {
+                "item-1": {
+                  "name": "T-Shirt #1",
+                  "price": 2999,
+                  "sizes": ["XS", "M", "L", "XXL"]
+                },
+                "item-2": {
+                  "name": "T-Shirt 21",
+                  "price": 3499,
+                  "sizes": ["XS", "M", "L", "XXL"]
+                },
+                "item-3": {
+                  "name": "T-Shirt 31",
+                  "price": 5999,
+                  "sizes": ["XS", "M", "L", "XXL"]
+                }
+              },
+              "desc": "DESC MEN XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+            },
+            "women-product-images": ["https://sites.google.com/site/rcmma2015/_/rsrc/1437291894551/home/image-e13f117d67eb679871a24715a279e70add319344b6cd658961aa8426cca0f525-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291891621/home/image-c383092de629d58de98e61337e3beb424f88933146ea7507c3b99a4cb953f9e5-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291888662/home/image-c2084ac5dadf457ca359eb7f343f1f2f57fb9637027e65d497ab867f462f9624-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291886028/home/image-a421bbac3ad17cacc9863038fab82b7174ae763d6d3038b60b6311059e8e6bde-V.jpg", "https://sites.google.com/site/rcmma2015/_/rsrc/1437291894551/home/image-e13f117d67eb679871a24715a279e70add319344b6cd658961aa8426cca0f525-V.jpg"],
+            "women-product-detail": {
+              "items": {
+                "item-1": {
+                  "name": "T-Shirt #1",
+                  "price": 2999,
+                  "sizes": ["XS", "M", "L", "XXL"]
+                },
+                "item-2": {
+                  "name": "T-Shirt #2",
+                  "price": 2999,
+                  "sizes": ["XS", "M", "L", "XXL"]
+                },
+                "item-3": {
+                  "name": "T-Shirt #3",
+                  "price": 2999,
+                  "sizes": ["XS", "M", "L", "XXL"]
+                }
+              },
+              "desc": "DESC WOMEN XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+            }
+        }
+    }
+}
