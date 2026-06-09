@@ -8,7 +8,7 @@ class Config:
     API_KEY = os.getenv('ALPACA_API_KEY')
     SECRET = os.getenv('ALPACA_SECRET')
     EXCHANGE_ID = os.getenv('EXCHANGE_ID', 'alpaca')
-    SYMBOL = os.getenv('TRADING_SYMBOL', 'BTC/USDT')
+    SYMBOL = os.getenv('TRADING_SYMBOL', 'BTC/USD')
     TIMEFRAME = os.getenv('TIMEFRAME', '1h')
     PAPER_TRADING = os.getenv('PAPER_TRADING', 'true').lower() == 'true'
     STRATEGY_MODE = os.getenv('STRATEGY_MODE', 'EMA')
