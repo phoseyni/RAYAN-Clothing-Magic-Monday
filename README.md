@@ -1,46 +1,19 @@
-# Autonomous Crypto Trading Bot
+# Advanced Autonomous Crypto Trading Bot
 
-An autonomous trading bot designed to work with European-compatible exchanges (default: Kraken) using the CCXT library.
+An autonomous trading bot with multi-strategy support and risk management.
 
 ## Features
-- Autonomous execution loop
-- SMA Crossover trading strategy
-- Integrated with CCXT for broad exchange support
-- Secure configuration via environment variables
-- Detailed logging
+- **Multiple Strategies**:
+  - **EMA**: Exponential Moving Average crossover for trending markets.
+  - **MEAN_REVERSION**: RSI-based oversold/overbought signals.
+  - **GRID**: Grid trading for sideways movements (Simplified implementation).
+  - **DCA**: Interval-based Dollar-Cost Averaging.
+- **Risk Management**: Bolder Stop Loss (5%) and Take Profit (10%) for paper trading.
+- **Visualisation**: Generates SMA/EMA charts for every trade.
+- **Notifications**: Automated email alerts via Mailjet with chart attachments.
 
-## Setup
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. Configure environment variables in a `.env` file:
-   ```env
-   EXCHANGE_ID=kraken
-   EXCHANGE_API_KEY=your_api_key
-   EXCHANGE_SECRET=your_secret
-   TRADING_SYMBOL=BTC/EUR
-   TIMEFRAME=1h
-   SMA_FAST=10
-   SMA_SLOW=30
-   TRADE_AMOUNT=0.001
-   ```
-3. Run the bot:
-   ```bash
-   python bot.py
-   ```
+## Configuration
+Set \`STRATEGY_MODE\` in your \`.env\` file to one of: \`EMA\`, \`MEAN_REVERSION\`, \`GRID\`, \`DCA\`.
 
-## Testing
-Run tests using:
-```bash
-python -m pytest
-```
-
-## Alpaca & Risk Management Update
-- Moved from Kraken to Alpaca.
-- Implemented Stop Loss (2%) and Take Profit (4%) to ensure gradual gains and survival.
-- Added `visualize.py` for strategy visualization.
-- Updated `bot.py` to track entry prices.
-
-### Visualization
-Run `python visualize.py` (ensure you have data or mock it) to generate `trading_plot.png`.
+## Installation & Deployment
+See [DIGITAL_OCEAN.md](DIGITAL_OCEAN.md) for automated deployment instructions.
