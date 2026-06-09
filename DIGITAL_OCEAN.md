@@ -1,23 +1,15 @@
 # DigitalOcean Deployment Guide
 
-This guide will help you deploy your autonomous crypto trading bot to a DigitalOcean Droplet.
+This guide will help you deploy your autonomous crypto trading bot with email notifications.
 
 ## 1. Create a Droplet
 - Log in to your DigitalOcean account.
 - Click **Create** -> **Droplets**.
-- **Choose an Image**: Ubuntu 22.04 LTS (or newer).
-- **Choose a Plan**: Basic (Shared CPU).
-- **Choose a Datacenter Region**: Select one closest to you.
-- **Authentication**: SSH keys are recommended.
+- Choose Ubuntu 22.04 LTS and a Basic Shared CPU plan.
 
 ## 2. Prepare the Droplet
-Connect via SSH:
 ```bash
 ssh root@your_droplet_ip
-```
-
-Update system and install dependencies:
-```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y python3 python3-pip python3-venv zip
 ```
@@ -35,11 +27,12 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp .env.template .env
-# Edit .env and add your Alpaca keys using 'nano .env' or 'vi .env'
+# Edit .env and add your Alpaca keys AND SMTP credentials
 ```
+*Note: For Gmail, you must use an **App Password**, not your regular password.*
 
 ## 5. Background Service
-Create a file at `/etc/systemd/system/cryptobot.service` with this content:
+Create `/etc/systemd/system/cryptobot.service`:
 ```ini
 [Unit]
 Description=Autonomous Crypto Trading Bot
@@ -55,12 +48,12 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-Enable and start the service:
+Enable and start:
 ```bash
 sudo systemctl enable cryptobot
 sudo systemctl start cryptobot
 ```
 
 ## 6. Monitor
-Check status: `sudo systemctl status cryptobot`
-View logs: `tail bot.log`
+Status: `sudo systemctl status cryptobot`
+Logs: `tail -f bot.log`

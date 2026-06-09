@@ -3,6 +3,8 @@ import logging
 from config import Config
 from exchange_interface import ExchangeInterface
 from strategy import Strategy
+from visualize import plot_strategy
+from email_notifier import EmailNotifier
 
 # Configure logging
 logging.basicConfig(
@@ -47,40 +49,57 @@ class TradingBot:
         signal = Strategy.calculate_signals(df, self.entry_price)
         logger.info(f"Generated signal: {signal}")
 
-        # Periodically save a visualization (optional, e.g., every 10 ticks)
-        # plot_strategy(ohlcv, [])
-
         # 3. Execute trade
         if signal == 'buy':
-            self.execute_buy(ohlcv[-1][4]) # pass current close price
+            self.execute_buy(ohlcv)
         elif signal == 'sell':
-            self.execute_sell()
+            self.execute_sell(ohlcv)
         else:
             logger.info("No action taken. Surviving...")
 
-    def execute_buy(self, current_price):
+    def execute_buy(self, ohlcv):
         if self.position == 'long':
             logger.info("Already in a long position.")
             return
 
+        current_price = ohlcv[-1][4]
         order = self.exchange.create_market_order(Config.SYMBOL, 'buy', Config.TRADE_AMOUNT)
         if order:
             logger.info(f"Buy order executed: {order['id']}")
             self.position = 'long'
             self.entry_price = current_price
-            logger.info(f"Entry price set to {self.entry_price}")
 
-    def execute_sell(self):
+            # Send Notification
+            plot_strategy(ohlcv, []) # Generate chart
+            EmailNotifier.send_trade_notification(
+                subject=f"TRADE OPENED: Buy {Config.SYMBOL}",
+                body=f"Price: {current_price}\nAmount: {Config.TRADE_AMOUNT}\nTime: {time.ctime()}",
+                attachment_path="trading_plot.png"
+            )
+
+    def execute_sell(self, ohlcv):
         if self.position != 'long':
             logger.info("No long position to close.")
             return
 
+        current_price = ohlcv[-1][4]
         order = self.exchange.create_market_order(Config.SYMBOL, 'sell', Config.TRADE_AMOUNT)
         if order:
             logger.info(f"Sell order executed: {order['id']}")
+
+            # Calculate profit/loss
+            pnl_pct = (current_price - self.entry_price) / self.entry_price * 100
+
+            # Send Notification
+            plot_strategy(ohlcv, []) # Generate chart
+            EmailNotifier.send_trade_notification(
+                subject=f"TRADE CLOSED: Sell {Config.SYMBOL}",
+                body=f"Price: {current_price}\nPNL: {pnl_pct:.2f}%\nTime: {time.ctime()}",
+                attachment_path="trading_plot.png"
+            )
+
             self.position = None
             self.entry_price = None
-            logger.info("Position closed and entry price cleared.")
 
 if __name__ == "__main__":
     bot = TradingBot()
