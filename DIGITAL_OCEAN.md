@@ -56,3 +56,23 @@ sudo systemctl start cryptobot
 ## 6. Monitor
 Status: `sudo systemctl status cryptobot`
 Logs: `tail -f bot.log`
+
+## 7. Easy Updates
+I have included scripts to make updating the code easier.
+
+### From your local computer:
+Run the deployment script with your Droplet IP:
+```bash
+./deploy_to_do.sh your_droplet_ip
+```
+This will:
+1. Re-package the bot into `crypto_bot.zip`.
+2. Upload it to your Droplet.
+3. Trigger `update_bot.sh` on the server.
+4. Restart the bot automatically.
+
+### Manually on the server:
+If you already uploaded a new `crypto_bot.zip`, just run:
+```bash
+bash /root/crypto_bot/update_bot.sh
+```
