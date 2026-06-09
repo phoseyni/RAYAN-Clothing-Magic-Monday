@@ -8,14 +8,24 @@ class ExchangeInterface:
     def __init__(self):
         try:
             exchange_class = getattr(ccxt, Config.EXCHANGE_ID)
-            self.exchange = exchange_class({
+            params = {
                 'apiKey': Config.API_KEY,
                 'secret': Config.SECRET,
-                'enableRateLimit': True,
-            })
+            }
+
+            self.exchange = exchange_class(params)
+
+            # Handle Alpaca Paper Trading
+            if Config.EXCHANGE_ID == 'alpaca' and Config.PAPER_TRADING:
+                self.exchange.set_sandbox_mode(True)
+                logger.info("Set Alpaca to Sandbox (Paper Trading) mode.")
+
             logger.info(f"Initialized {Config.EXCHANGE_ID} exchange.")
         except AttributeError:
             logger.error(f"Exchange {Config.EXCHANGE_ID} not found in CCXT.")
+            raise
+        except Exception as e:
+            logger.error(f"Error initializing exchange: {e}")
             raise
 
     def fetch_ohlcv(self, symbol, timeframe, limit=100):

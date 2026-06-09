@@ -1,12 +1,22 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from strategy import Strategy
+from exchange_interface import ExchangeInterface
+from config import Config
 
-def plot_strategy(ohlcv_data, signals):
+def generate_visualization():
     """
-    Plots OHLCV data, SMAs and markers for buy/sell signals.
+    Fetches real data and generates a strategy plot.
     """
-    df = Strategy.calculate_indicators(ohlcv_data)
+    print(f"Generating visualization for {Config.SYMBOL}...")
+    exchange = ExchangeInterface()
+    ohlcv = exchange.fetch_ohlcv(Config.SYMBOL, Config.TIMEFRAME, limit=100)
+
+    if not ohlcv:
+        print("Failed to fetch data for visualization.")
+        return
+
+    df = Strategy.calculate_indicators(ohlcv)
     if df is None:
         print("Insufficient data for plotting.")
         return
@@ -16,22 +26,18 @@ def plot_strategy(ohlcv_data, signals):
 
     plt.figure(figsize=(12, 6))
     plt.plot(df.index, df['close'], label='Close Price', color='blue', alpha=0.5)
-    plt.plot(df.index, df['sma_fast'], label='SMA Fast', color='orange')
-    plt.plot(df.index, df['sma_slow'], label='SMA Slow', color='red')
+    plt.plot(df.index, df['sma_fast'], label='SMA Fast (10)', color='orange')
+    plt.plot(df.index, df['sma_slow'], label='SMA Slow (30)', color='red')
 
-    # Plot Buy/Sell signals if provided (simplified for visualization)
-    # In a real bot, we'd record actual trade timestamps
-
-    plt.title('Trading Strategy Visualization')
-    plt.xlabel('Date')
+    plt.title(f'Alpaca Trading Strategy: {Config.SYMBOL} ({Config.TIMEFRAME})')
+    plt.xlabel('Time')
     plt.ylabel('Price')
     plt.legend()
     plt.grid(True)
 
-    # Save to file as we are in a headless environment
-    plt.savefig('trading_plot.png')
-    print("Plot saved to trading_plot.png")
+    output_file = 'trading_plot.png'
+    plt.savefig(output_file)
+    print(f"Plot successfully saved to {output_file}")
 
 if __name__ == "__main__":
-    # Example usage with mock data if needed
-    pass
+    generate_visualization()
