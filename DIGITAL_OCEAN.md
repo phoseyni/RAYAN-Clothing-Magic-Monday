@@ -1,6 +1,6 @@
 # DigitalOcean Deployment Guide
 
-This guide will help you deploy your autonomous crypto trading bot with email notifications.
+This guide will help you deploy your autonomous crypto trading bot with Mailjet notifications.
 
 ## 1. Create a Droplet
 - Log in to your DigitalOcean account.
@@ -27,9 +27,8 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp .env.template .env
-# Edit .env and add your Alpaca keys AND SMTP credentials
+# Edit .env and add your Alpaca keys AND Mailjet credentials
 ```
-*Note: For Gmail, you must use an **App Password**, not your regular password.*
 
 ## 5. Background Service
 Create `/etc/systemd/system/cryptobot.service`:

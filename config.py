@@ -20,7 +20,7 @@ class Config:
 
     # Email Configuration
     EMAIL_RECIPIENT = os.getenv('EMAIL_RECIPIENT', 'Pooyan.hoseyni@gmail.com')
-    SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
+    SMTP_SERVER = os.getenv('SMTP_SERVER', 'in-v3.mailjet.com')
     SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
     SMTP_USER = os.getenv('SMTP_USER')
-    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD') # App-specific password recommended
+    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
