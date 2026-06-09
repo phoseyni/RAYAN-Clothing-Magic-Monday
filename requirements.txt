@@ -2,3 +2,5 @@ ccxt
 pandas
 python-dotenv
 pytest
+matplotlib
+alpaca-trade-api

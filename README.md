@@ -35,3 +35,12 @@ Run tests using:
 ```bash
 python -m pytest
 ```
+
+## Alpaca & Risk Management Update
+- Moved from Kraken to Alpaca.
+- Implemented Stop Loss (2%) and Take Profit (4%) to ensure gradual gains and survival.
+- Added `visualize.py` for strategy visualization.
+- Updated `bot.py` to track entry prices.
+
+### Visualization
+Run `python visualize.py` (ensure you have data or mock it) to generate `trading_plot.png`.

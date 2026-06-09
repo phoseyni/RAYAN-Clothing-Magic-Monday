@@ -18,15 +18,15 @@ logger = logging.getLogger(__name__)
 class TradingBot:
     def __init__(self):
         self.exchange = ExchangeInterface()
-        self.position = None  # To track current position (simulated for simplicity)
+        self.entry_price = None
+        self.position = None
 
     def run(self):
-        logger.info("Starting trading bot...")
+        logger.info(f"Starting trading bot on {Config.EXCHANGE_ID}...")
         while True:
             try:
                 self.tick()
-                # Sleep based on timeframe or a fixed interval
-                time.sleep(60) # Check every minute
+                time.sleep(60)
             except KeyboardInterrupt:
                 logger.info("Bot stopped by user.")
                 break
@@ -42,19 +42,23 @@ class TradingBot:
         if not ohlcv:
             return
 
-        # 2. Calculate signal
-        signal = Strategy.calculate_signals(ohlcv)
+        # 2. Calculate indicators and signal
+        df = Strategy.calculate_indicators(ohlcv)
+        signal = Strategy.calculate_signals(df, self.entry_price)
         logger.info(f"Generated signal: {signal}")
+
+        # Periodically save a visualization (optional, e.g., every 10 ticks)
+        # plot_strategy(ohlcv, [])
 
         # 3. Execute trade
         if signal == 'buy':
-            self.execute_buy()
+            self.execute_buy(ohlcv[-1][4]) # pass current close price
         elif signal == 'sell':
             self.execute_sell()
         else:
-            logger.info("No action taken.")
+            logger.info("No action taken. Surviving...")
 
-    def execute_buy(self):
+    def execute_buy(self, current_price):
         if self.position == 'long':
             logger.info("Already in a long position.")
             return
@@ -63,6 +67,8 @@ class TradingBot:
         if order:
             logger.info(f"Buy order executed: {order['id']}")
             self.position = 'long'
+            self.entry_price = current_price
+            logger.info(f"Entry price set to {self.entry_price}")
 
     def execute_sell(self):
         if self.position != 'long':
@@ -73,6 +79,8 @@ class TradingBot:
         if order:
             logger.info(f"Sell order executed: {order['id']}")
             self.position = None
+            self.entry_price = None
+            logger.info("Position closed and entry price cleared.")
 
 if __name__ == "__main__":
     bot = TradingBot()
