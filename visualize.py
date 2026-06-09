@@ -1,43 +1,45 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from strategy import Strategy
-from exchange_interface import ExchangeInterface
 from config import Config
 
-def generate_visualization():
+def plot_strategy(ohlcv_data, signals):
     """
-    Fetches real data and generates a strategy plot.
+    Plots OHLCV data, indicators and markers for buy/sell signals.
     """
-    print(f"Generating visualization for {Config.SYMBOL}...")
-    exchange = ExchangeInterface()
-    ohlcv = exchange.fetch_ohlcv(Config.SYMBOL, Config.TIMEFRAME, limit=100)
-
-    if not ohlcv:
-        print("Failed to fetch data for visualization.")
-        return
-
-    df = Strategy.calculate_indicators(ohlcv)
+    df = Strategy.calculate_indicators(ohlcv_data)
     if df is None:
-        print("Insufficient data for plotting.")
         return
 
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
     df.set_index('timestamp', inplace=True)
 
-    plt.figure(figsize=(12, 6))
-    plt.plot(df.index, df['close'], label='Close Price', color='blue', alpha=0.5)
-    plt.plot(df.index, df['sma_fast'], label='SMA Fast (10)', color='orange')
-    plt.plot(df.index, df['sma_slow'], label='SMA Slow (30)', color='red')
+    plt.figure(figsize=(12, 8))
 
-    plt.title(f'Alpaca Trading Strategy: {Config.SYMBOL} ({Config.TIMEFRAME})')
-    plt.xlabel('Time')
+    # Subplot 1: Price and EMAs
+    ax1 = plt.subplot(2, 1, 1)
+    plt.plot(df.index, df['close'], label='Close Price', color='blue', alpha=0.5)
+    if 'ema_fast' in df.columns:
+        plt.plot(df.index, df['ema_fast'], label=f'EMA Fast ({Config.EMA_FAST})', color='orange')
+    if 'ema_slow' in df.columns:
+        plt.plot(df.index, df['ema_slow'], label=f'EMA Slow ({Config.EMA_SLOW})', color='red')
+
+    plt.title(f'Trading Strategy: {Config.SYMBOL} ({Config.TIMEFRAME}) - {Config.STRATEGY_MODE}')
     plt.ylabel('Price')
     plt.legend()
     plt.grid(True)
 
-    output_file = 'trading_plot.png'
-    plt.savefig(output_file)
-    print(f"Plot successfully saved to {output_file}")
+    # Subplot 2: RSI
+    if 'rsi' in df.columns:
+        plt.subplot(2, 1, 2, sharex=ax1)
+        plt.plot(df.index, df['rsi'], label='RSI', color='purple')
+        plt.axhline(Config.RSI_OVERBOUGHT, color='red', linestyle='--')
+        plt.axhline(Config.RSI_OVERSOLD, color='green', linestyle='--')
+        plt.ylabel('RSI')
+        plt.ylim(0, 100)
+        plt.legend()
+        plt.grid(True)
 
-if __name__ == "__main__":
-    generate_visualization()
+    plt.tight_layout()
+    plt.savefig('trading_plot.png')
+    plt.close()
