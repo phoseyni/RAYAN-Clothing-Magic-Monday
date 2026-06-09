@@ -1,17 +1,17 @@
 # DigitalOcean One-Command Deployment Guide
 
-I have automated most of the installation. Here is how to reinstall or set up the bot from scratch.
+I have automated most of the installation. Here is how to reinstall or set up the bot on your Droplet (**165.227.175.240**).
 
 ## 1. Upload the zip
-From your **local computer**, upload the zip file to your root directory:
+From your **local computer**, upload the zip file:
 ```bash
-scp crypto_bot.zip root@your_droplet_ip:/root/
+scp crypto_bot.zip root@165.227.175.240:/root/
 ```
 
 ## 2. Run the Setup Script
-Connect to your Droplet via SSH and run the setup script directly from the zip:
+Connect to your Droplet via SSH and run the setup script:
 ```bash
-ssh root@your_droplet_ip
+ssh root@165.227.175.240
 unzip crypto_bot.zip setup_droplet.sh
 bash setup_droplet.sh
 ```
@@ -29,11 +29,10 @@ sudo systemctl start cryptobot
 ---
 
 ## Future Updates (Easier)
-Once the bot is installed, you can update it in one go from your **local computer**:
+Once installed, you can update the bot from your **local computer** with one command:
 ```bash
-./deploy_to_do.sh your_droplet_ip
+./deploy_to_do.sh 165.227.175.240
 ```
-This will automatically package, upload, and restart the bot for you.
 
 ## Monitoring
 - Status: `sudo systemctl status cryptobot`
