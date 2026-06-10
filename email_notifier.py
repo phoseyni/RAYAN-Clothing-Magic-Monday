@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 class EmailNotifier:
     @staticmethod
     def send_trade_notification(subject, body, attachment_path=None):
-        if not Config.SMTP_USER or not Config.SMTP_PASSWORD: return
+        if not Config.SMTP_USER or not Config.SMTP_PASSWORD:
+            return
         msg = MIMEMultipart()
         msg['From'], msg['To'], msg['Subject'] = Config.SMTP_USER, Config.EMAIL_RECIPIENT, subject
         msg.attach(MIMEText(body, 'plain'))
@@ -23,10 +24,14 @@ class EmailNotifier:
                     encoders.encode_base64(part)
                     part.add_header("Content-Disposition", f"attachment; filename= {attachment_path}")
                     msg.attach(part)
-            except Exception as e: logger.error(f"Attach error: {e}")
+            except Exception as e:
+                logger.error(f"Attach error: {e}")
         try:
             server = smtplib.SMTP(Config.SMTP_SERVER, Config.SMTP_PORT)
-            server.starttls(); server.login(Config.SMTP_USER, Config.SMTP_PASSWORD)
-            server.send_message(msg); server.quit()
+            server.starttls()
+            server.login(Config.SMTP_USER, Config.SMTP_PASSWORD)
+            server.send_message(msg)
+            server.quit()
             logger.info(f"Email sent to {Config.EMAIL_RECIPIENT}")
-        except Exception as e: logger.error(f"Email error: {e}")
+        except Exception as e:
+            logger.error(f"Email error: {e}")

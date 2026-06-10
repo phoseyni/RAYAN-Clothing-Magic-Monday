@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    VERSION = "1.1.3"
+    VERSION = "1.1.4"
     API_KEY = os.getenv('ALPACA_API_KEY')
     SECRET = os.getenv('ALPACA_SECRET')
     EXCHANGE_ID = os.getenv('EXCHANGE_ID', 'alpaca')

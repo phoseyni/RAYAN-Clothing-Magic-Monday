@@ -28,7 +28,7 @@ def run_test():
                 print(f"Status: {order['status']}")
 
                 # Immediate sell to close the test position (survive little by little!)
-                print(f"Closing position with a SELL order...")
+                print("Closing position with a SELL order...")
                 sell_order = interface.create_market_order(symbol, 'sell', amount)
                 if sell_order:
                     print("SUCCESS: Position closed.")

@@ -1,5 +1,4 @@
 from strategy import Strategy
-from config import Config
 
 def test_ema_crossover():
     # Price jump triggers EMA cross

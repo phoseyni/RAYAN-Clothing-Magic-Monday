@@ -1,4 +1,4 @@
-# DigitalOcean Clean Installation Guide (Bot v1.1.3)
+# DigitalOcean Clean Installation Guide (Bot v1.1.4)
 
 Follow these steps to set up your bot on a fresh Droplet (165.227.175.240).
 
@@ -14,13 +14,13 @@ ssh root@165.227.175.240
 unzip crypto_bot.zip setup_droplet.sh
 bash setup_droplet.sh
 ```
-*This installs Python, sets up the virtual environment, and creates the background service.*
 
-## 3. Configuration
+## 3. Configuration (IMPORTANT)
+The bot will crash if keys are missing.
 ```bash
 cd /root/crypto_bot
 cp .env.template .env
-# Use 'nano .env' to add your Alpaca and Mailjet keys
+# Edit .env and add your Alpaca and Mailjet keys
 ```
 
 ## 4. Start the Bot
@@ -28,14 +28,14 @@ cp .env.template .env
 sudo systemctl start cryptobot
 ```
 
-## 5. Monitoring
-- **Status**: `sudo systemctl status cryptobot`
-- **Live Logs**: `tail -f /root/crypto_bot/bot.log`
+## 5. Troubleshooting
+If the bot fails to start, check the logs:
+`tail -n 50 /root/crypto_bot/bot.log`
+
+**Common Cause**: Missing or incorrect API keys in `.env`. The bot v1.1.4 now performs a "pre-flight check" and will log the specific missing key.
 
 ---
 
 ## Future Updates
-To update your code in the future, just run this from your **local computer**:
-```bash
-./deploy_to_do.sh 165.227.175.240
-```
+Update your code from your **local computer**:
+`./deploy_to_do.sh 165.227.175.240`
